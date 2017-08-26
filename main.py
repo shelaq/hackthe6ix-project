@@ -2,12 +2,12 @@ import os
 from flask import Flask
 from flask import jsonify
 from flask import request
-from flask.ext.pymongo import PyMongo
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'test'
-app.config['MONGO_URI'] = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hackthe6ix-project'
+app.config['MONGO_URI'] = 'mongodb://shela:shela@ds161503.mlab.com:61503/hackthe6ix-project'
 
 mongo = PyMongo(app)
 

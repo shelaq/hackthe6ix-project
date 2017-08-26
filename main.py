@@ -11,7 +11,7 @@ app.config['MONGO_URI'] = 'mongodb://shela:shela@ds161503.mlab.com:61503/hackthe
 
 mongo = PyMongo(app)
 
-@app.route('/test')
+
 def test():
 	user = mongo.db.users
 	user.insert({'name':'Anthony', 'lastname':'Bob'})
@@ -22,6 +22,16 @@ def test():
 	# new_star = testDB.find_one({'_id': star_id })
 	# output = {'name' : new_star['name'], 'distance' : new_star['distance']}
 	# return jsonify({'result' : output})
+
+@app.route('/test')
+def add_user():
+	name = "Bob"
+	auth = "sjfosjf098ewj0whf"
+	users = mongo.db.users
+	users.insert({'auth_token':auth})
+	current_user = user.find(auth)
+	current_user.insert({'name':name})
+	return 'added user'
 	
 
 @app.route('/testprintjson', methods=['GET'])

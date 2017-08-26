@@ -53,9 +53,6 @@ def test():
   # output = {'name' : new_star['name'], 'distance' : new_star['distance']}
   # return jsonify({'result' : output})
 
-@app.route("/idk")
-def test():
-    return "Hello world!"
   
 @app.route("/")
 def hello():

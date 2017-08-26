@@ -11,7 +11,7 @@ app.config['MONGO_URI'] = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hac
 
 mongo = PyMongo(app)
 
-@app.route('/test'])
+@app.route('/test')
 def test():
 	testDB = mongo.db.users
 	user.insert({'name':'Anthony'})

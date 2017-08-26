@@ -7,11 +7,11 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'restdb'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/restdb'
+app.config['MONGO_DBNAME'] = 'heroku_pn5551p6'
+app.config['MONGO_URI'] = 'mongodb://heroku_pn5551p6:i9pr6otkkl6935096r47vkhndd@ds159493.mlab.com:59493/heroku_pn5551p6'
 
 #mongo = PyMongo(app)
-uri = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hackthe6ix-project'
+uri = 'mongodb://heroku_pn5551p6:i9pr6otkkl6935096r47vkhndd@ds159493.mlab.com:59493/heroku_pn5551p6'
 
 @app.route('/test', methods=['GET'])
 def test():

@@ -2,28 +2,27 @@ import os
 from flask import Flask
 from flask import jsonify
 from flask import request
-#from pymongo import PyMongo
-from pymongo import MongoClient
+from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'heroku_pn5551p6'
-app.config['MONGO_URI'] = 'mongodb://heroku_pn5551p6:i9pr6otkkl6935096r47vkhndd@ds159493.mlab.com:59493/heroku_pn5551p6'
+app.config['MONGO_DBNAME'] = 'test'
+app.config['MONGO_URI'] = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hackthe6ix-project'
 
-#mongo = PyMongo(app)
-uri = 'mongodb://heroku_pn5551p6:i9pr6otkkl6935096r47vkhndd@ds159493.mlab.com:59493/heroku_pn5551p6'
+mongo = PyMongo(app)
 
-@app.route('/test', methods=['GET'])
+@app.route('/test'])
 def test():
-	client = MongoClient(uri)
-	db = client['test']
-
-	db.test_collection.insert({'some_key': 'some_value'})
-
-	for col in db.test_collection.find():
-		print(col)
+	testDB = mongo.db.users
+	user.insert({'name':'Anthony'})
+	return 'Added User!'
+	# name = request.json['name']
+	# distance = request.json['distance']
+	# star_id = testDB.insert({'name': name, 'distance': distance})
+	# new_star = testDB.find_one({'_id': star_id })
+	# output = {'name' : new_star['name'], 'distance' : new_star['distance']}
+	# return jsonify({'result' : output})
 	
-	return db.test_collection.find()
 
 # @app.route('/star', methods=['GET'])
 # def get_all_stars():

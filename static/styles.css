@@ -1,1 +1,40 @@
-/* css stuff */
+.nav{
+background-color: orange;
+height: 70px;
+width: 100%;
+display: flex;
+align-items: center;
+}
+
+.nav i {
+  margin-right: 20px;
+  color: white;
+  position: absolute;
+  right: 5%;
+}
+
+.nav p {
+  margin-left: 30px;
+  font-size: 28px;
+  color: white;
+}
+
+
+.add-button{
+  position: fixed;
+  right: 7%;
+  bottom: 7%;
+  height: 60px;
+  width: 60px;
+  background-color: orange;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.add-button button{
+  font-size: 40px;
+  margin-bottom: 10px !important;
+}

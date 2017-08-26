@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request, redirect
 from flask import jsonify
 from flask import request
 from flask_pymongo import PyMongo
@@ -22,7 +22,6 @@ def test():
 	# new_star = testDB.find_one({'_id': star_id })
 	# output = {'name' : new_star['name'], 'distance' : new_star['distance']}
 	# return jsonify({'result' : output})
-
 
 def add_user():
 	name = "Bob"
@@ -62,10 +61,10 @@ def print_json():
   # output = {'name' : new_star['name'], 'distance' : new_star['distance']}
   # return jsonify({'result' : output})
 
-  
+
 @app.route("/")
 def hello():
-    return "Hello world!"
+    return render_template('index.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

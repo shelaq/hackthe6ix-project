@@ -29,7 +29,7 @@ def add_user():
 	auth = "sjfosjf098ewj0whf"
 	users = mongo.db.users
 	users.insert({'auth_token':auth})
-	current_user = user.find(auth)
+	current_user = users.find(auth)
 	current_user.insert({'name':name})
 	return 'added user'
 	

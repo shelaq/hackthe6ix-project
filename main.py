@@ -13,17 +13,17 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/restdb'
 #mongo = PyMongo(app)
 uri = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hackthe6ix-project'
 
-# @app.route('/test', methods=['GET'])
-# def test():
-	# client = MongoClient(uri)
-	# db = client['test']
+@app.route('/test', methods=['GET'])
+def test():
+	client = MongoClient(uri)
+	db = client['test']
 
-	# db.test_collection.insert({'some_key': 'some_value'})
+	db.test_collection.insert({'some_key': 'some_value'})
 
-	# for col in db.test_collection.find():
-		# print(col)
+	for col in db.test_collection.find():
+		print(col)
 	
-	# return db.test_collection.find()
+	return db.test_collection.find()
 
 # @app.route('/star', methods=['GET'])
 # def get_all_stars():
@@ -54,7 +54,7 @@ uri = 'mongodb://<shela>:<shela>@ds161503.mlab.com:61503/hackthe6ix-project'
   # return jsonify({'result' : output})
 
 @app.route("/idk")
-def hello():
+def test():
     return "Hello world!"
   
 @app.route("/")

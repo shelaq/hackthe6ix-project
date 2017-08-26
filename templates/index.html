@@ -14,6 +14,7 @@
 
 
   <script>
+
     window.fbAsyncInit = function() {
       FB.init({
         appId: '1865839493734338',
@@ -39,8 +40,8 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    function statusChangeCallback(response){
-      if(response.status === 'connected'){
+    function statusChangeCallback(response) {
+      if (response.status === 'connected') {
         console.log('Logged in');
       } else {
         console.log('not logged in');
@@ -48,11 +49,17 @@
     }
 
     function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
-}
-
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+        if (response.status === 'connected') {
+          console.log(response.authResponse.accessToken);
+          FB.api('/me', function(response) {
+            console.log(response['name']);
+            document.getElementById('username').innerHTML = 'UOMi - ' + response['name'];
+          });
+        }
+      });
+    }
   </script>
 
 
@@ -60,7 +67,7 @@
   </fb:login-button>
 
   <div class="nav">
-    <p> UOMi </p>
+    <p id="username"> UOMi </p>
     <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
   </div>
 
@@ -68,9 +75,6 @@
     <button data-toggle="modal" data-target="#exampleModal">+</button>
   </div>
 
-
-  <div class="fb-like" data-share="true" data-width="450" data-show-faces="true">
-  </div>
 
 
   <div class="container">

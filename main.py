@@ -1,9 +1,9 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request, redirect
 from flask import jsonify
 from flask import request
 #from pymongo import PyMongo
-from pymongo import MongoClient
+# from pymongo import MongoClient
 
 app = Flask(__name__)
 
@@ -22,7 +22,7 @@ def test():
 
 	for col in db.test_collection.find():
 		print(col)
-	
+
 	return db.test_collection.find()
 
 # @app.route('/star', methods=['GET'])
@@ -53,10 +53,10 @@ def test():
   # output = {'name' : new_star['name'], 'distance' : new_star['distance']}
   # return jsonify({'result' : output})
 
-  
+
 @app.route("/")
 def hello():
-    return "Hello world!"
+    return render_template('index.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

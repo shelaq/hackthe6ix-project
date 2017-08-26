@@ -14,7 +14,7 @@ mongo = PyMongo(app)
 @app.route('/test')
 def test():
 	user = mongo.db.users
-	user.insert({'name':'Anthony'})
+	user.insert({'name':'Anthony', 'lastname':'Bob'})
 	return 'Added User!'
 	# name = request.json['name']
 	# distance = request.json['distance']
@@ -24,13 +24,13 @@ def test():
 	# return jsonify({'result' : output})
 	
 
-# @app.route('/star', methods=['GET'])
-# def get_all_stars():
-  # star = mongo.db.stars
-  # output = []
-  # for s in star.find():
-    # output.append({'name' : s['name'], 'distance' : s['distance']})
-  # return jsonify({'result' : output})
+@app.route('/testprintjson', methods=['GET'])
+def print_json():
+  user = mongo.db.users
+  output = []
+  for s in user.find():
+    output.append({'name' : s['name'], 'lastname' : s['lastname']})
+  return jsonify({'result' : output})
 
 # @app.route('/star/', methods=['GET'])
 # def get_one_star(name):

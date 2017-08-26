@@ -13,7 +13,7 @@ mongo = PyMongo(app)
 
 @app.route('/test')
 def test():
-	testDB = mongo.db.users
+	user = mongo.db.users
 	user.insert({'name':'Anthony'})
 	return 'Added User!'
 	# name = request.json['name']

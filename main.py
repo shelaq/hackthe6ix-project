@@ -31,7 +31,7 @@ def add_user():
 	current_user = users.find(auth)
 	current_user.insert({'name':name})
 	return 'added user'
-	
+
 
 @app.route('/testprintjson', methods=['GET'])
 def print_json():

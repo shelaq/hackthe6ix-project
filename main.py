@@ -1,7 +1,7 @@
-import os #needed for heroku 
+import os #needed for heroku
 import time #needed for automaticaly settling debts
 from flask import Flask, request, render_template, session, redirect, url_for, jsonify
-from flask_pymongo import PyMongo 
+from flask_pymongo import PyMongo
 from flask_oauthlib.client import OAuth
 
 app = Flask(__name__)
@@ -37,16 +37,16 @@ def index():
 	if 'google_token' in session:
 		return render_template('index.html')
 	return redirect(url_for('login'))
-	
+
 @app.route('/login')
 def login():
 	return google.authorize(callback=url_for('authorized', _external=True))
-	
+
 @app.route('/logout')
 def logout():
     session.pop('id', None)
     return redirect(url_for('index'))
-	
+
 @app.route('/oauth2callback')
 def authorized():
     resp = google.authorized_response()
@@ -74,7 +74,7 @@ def get_google_oauth_token():
 def get():
     users = mongo.db.usertest
     tester = users.find_one({'_id':session['id']})
-    return jsonify(tester) 
+    return jsonify(tester)
 
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
@@ -99,7 +99,7 @@ def delete():
             '_id':session['id'],
             "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
             {'$set':{'accountsPayable.$.total': 0 }})
-    
+
 
 
     return 'test'
@@ -130,7 +130,7 @@ def post():
         total = 0
         for i in range(len(tester['accountsPayable'])):
             if tester['accountsPayable'][i]['name'] == placeholder['name']:
-                total = tester['accountsPayable'][i]['total'] + amount #increment total 
+                total = tester['accountsPayable'][i]['total'] + amount #increment total
 
         #update fields
         users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
@@ -139,8 +139,8 @@ def post():
             "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
             {'$set':{'accountsPayable.$.total': int(total) }})
     else: #need to create new person
-        users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total':int(placeholder['amount']), 'transactions':[] } }})
-        update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
+        users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total':int(amount), 'transactions':[] } }})
+        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':int(amount), 'reason':placeholder['reason']}}} )
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
 
     return jsonify(tester)

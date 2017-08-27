@@ -76,7 +76,7 @@ def get():
     tester = users.find_one({'_id':session['id']})
     return jsonify(tester)
 
-@app.route('/delete', methods=['GET', 'POST'])
+@app.route('/delete', methods=['POST'])
 def delete():
     '''
     placeholder = {
@@ -100,9 +100,8 @@ def delete():
             "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
             {'$set':{'accountsPayable.$.total': 0 }})
 
-
-
     return 'test'
+
 
 @app.route('/post', methods=['GET', 'POST'])
 def post():

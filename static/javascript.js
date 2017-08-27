@@ -95,17 +95,18 @@ function getData() {
 }
 
 function clicked(data){
-  console.log(data);
-  console.log(data.getElementByTagName('a').innerHTML);
+    var placeholder = {
+      "name": $(data).find('a')[0].innerHTML
+    }
+    console.log(placeholder);
 
-  // var xhttp = new XMLHttpRequest();
-  // xhttp.open("DELETE", "http://localhost:5000/delete", false);
-  // xhttp.setRequestHeader("Content-type", "application/json");
-  // xhttp.send();
-  //
-  // var response = JSON.parse(xhttp.responseText);
-  // console.log(response);
-  // people = response;
+
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("DELETE", "http://localhost:5000/delete", false);
+    xhttp.setRequestHeader("Content-type", "application/json" );
+    xhttp.send(name);
+
 }
 
 function addEntry(data) {
@@ -123,7 +124,7 @@ function deleteEntry (data){
 }
 
 function logOut() {
-  window.location.href = 'http://localhost5000/logout';
+  window.location.href = 'http://localhost:5000/logout';
 }
 
 $(document).ready(function() {

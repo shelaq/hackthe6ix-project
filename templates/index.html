@@ -6,7 +6,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="../static/styles1.css">
-  <title>IOU</title>
+  <link rel="icon" href="../Assets/favicon.ico" type="image/x-icon" />
+  <title>UOMi</title>
 
 </head>
 
@@ -69,7 +70,7 @@
   <div class="nav">
     <p id="username"> UOMi </p>
     <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
-    <button onclick="logOut()" data-toggle="logOut" data-target="#exampleModal"> log out </button>
+    <button onclick="logOut()" data-toggle="logOut" data-target="#exampleModal" class="log-out"> log out </button>
   </div>
 
   <div class="add-button">
@@ -185,9 +186,9 @@
               <input type="number" class="form-control" id="amount-owed">
             </div>
             <div class="form-group">
-              <label for="message-text" class="form-control-label">They Owe You:</label> <br>
+              <label for="message-text" class="form-control-label">They Owe You:</label>
 
-              <input id="theyOweYou" type="checkbox" name="theyOweYou"><br>
+              <input id="theyOweYou" type="checkbox" name="theyOweYou" style="display:inline-block; margin-left:20px;"><br>
 
             </div>
             <div class="form-group">

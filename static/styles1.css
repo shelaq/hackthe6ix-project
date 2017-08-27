@@ -12,8 +12,9 @@ align-items: center;
   color: white;
   position: absolute;
   right: 5%;
-  
+
 }
+
 
 .x{
   color: orange !important;
@@ -21,6 +22,7 @@ align-items: center;
   height:100%;
   display:flex;
   align-items:center;
+  margin-top: -10px;
 }
 
 .nav p {

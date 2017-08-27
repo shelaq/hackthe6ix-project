@@ -76,7 +76,7 @@ def get():
     tester = users.find_one({'_id':session['id']})
     return jsonify(tester)
 
-@app.route('/delete', methods=['GET', 'POST'])
+@app.route('/delete', methods=['GET', 'POST', 'DELETE'])
 def delete():
     '''
     placeholder = {

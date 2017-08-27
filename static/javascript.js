@@ -21,6 +21,8 @@ var people = {
   }]
 }
 
+// working expression for collecting checkbox value. Returns Bool 
+console.log($('#theyOweYou').is(':checked')););
 
 //function for populating
 function populate() {

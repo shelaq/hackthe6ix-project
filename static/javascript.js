@@ -102,9 +102,9 @@ function clicked(data){
     console.log(placeholder);
 
 
-
+    var curr_url = location.protocol + "//" + location.host + "/delete";
     var xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "http://localhost:5000/delete", true);
+    xhttp.open("DELETE", curr_url, true);
     xhttp.setRequestHeader("Content-type", "application/json" );
     xhttp.send(placeholder);
 
@@ -122,7 +122,9 @@ function addEntry(data) {
 }
 
 function logOut() {
-  window.location.href = 'http://localhost:5000/logout';
+    var curr_url = location.protocol + "//" + location.host + "/logout";
+    
+    window.location.href = curr_url;
 }
 
 $(document).ready(function() {

@@ -105,7 +105,7 @@ function clicked(data){
     var xhttp = new XMLHttpRequest();
     xhttp.open("DELETE", "http://localhost:5000/delete", false);
     xhttp.setRequestHeader("Content-type", "application/json" );
-    xhttp.send(name);
+    xhttp.send(placeholder);
 
 }
 
@@ -116,10 +116,6 @@ function addEntry(data) {
   xhttp.send(data);
   getData();
   location.reload();
-
-}
-
-function deleteEntry (data){
 
 }
 

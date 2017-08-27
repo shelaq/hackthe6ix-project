@@ -60,7 +60,7 @@ def authorized():
     me = google.get('userinfo')
 
     session['id'] = me.data['id'] # (me.data['id'], '') SHELAAAAAA
-    
+
     users = mongo.db.usertest
     if users.find({'_id': me.data['id']}).count() == 0:
         users.insert({"_id":me.data['id'], "name": me.data['given_name'], "accountsPayable":[]})
@@ -92,6 +92,7 @@ def post():
     amount = int(placeholder['amount'])
     if not placeholder['theyOweYou']:
         amount = -1*amount
+        print('dopeass')
 
     print(session['id'])
 

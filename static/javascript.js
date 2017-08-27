@@ -43,6 +43,8 @@ function populate() {
       var tempNodeList = document.querySelector("div[data-type='listTemplate']").cloneNode(true); //true for deep clone
       tempNodeList.querySelector(".money-owed-list").textContent = "Money Owed: $" + people['accountsPayable'][i]['transactions'][j]['amount'];
       tempNodeList.querySelector(".date").textContent = "date: " + people['accountsPayable'][i]['transactions'][j]['date'];
+      tempNodeList.querySelector(".reason").textContent =  people['accountsPayable'][i]['transactions'][j]['reason'];
+
       tempNodeList.style.display = "block";
       tempNode.appendChild(tempNodeList);
     }

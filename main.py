@@ -88,7 +88,7 @@ def post():
     }
     '''
     placeholder = request.json
-    amount = placeholder['amount']
+    amount = int(placeholder['amount'])
     if not placeholder['theyOweYou']:
         amount = -1*amount
 
@@ -98,7 +98,7 @@ def post():
     if tester:
         total = amount
         for i in range(len(tester['accountsPayable'])):
-            total += tester['accountsPayable'][i]['total']
+            total += int(tester['accountsPayable'][i]['total'])
 
         users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
         users.update({

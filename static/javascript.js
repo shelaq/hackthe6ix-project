@@ -1,22 +1,22 @@
 // sample dataset
 var people = {
   "accountsPayable": [{
-    "Name": "Eason",
-    "Transactions": [{
-      "Date": "01/01/2001",
-      "Amount": 888
+    "name": "Eason",
+    "transactions": [{
+      "date": "01/01/2001",
+      "amount": 888
     }, {
-      "Date": "01/05/2001",
-      "Amount": 500
+      "date": "01/05/2001",
+      "amount": 500
     }]
   }, {
-    "Name": "Nick",
-    "Transactions": [{
-      "Date": "01/01/2001",
-      "Amount": 364
+    "name": "Nick",
+    "transactions": [{
+      "date": "01/01/2001",
+      "amount": 364
     }, {
-      "Date": "01/01/2001",
-      "Amount": 234
+      "date": "01/01/2001",
+      "amount": 234
     }]
   }]
 }
@@ -26,20 +26,20 @@ var people = {
 function populate() {
 
   var docFrag = document.createDocumentFragment();
-  var moneyOwed = 0
+  var moneyOwed = 0;
 
   for (var i = 0; i < people['accountsPayable'].length; i++) {
     var tempNode = document.querySelector("div[data-type='template']").cloneNode(true); //true for deep clone
-    tempNode.querySelector(".name").textContent = people['accountsPayable'][i]['Name'];
+    tempNode.querySelector(".name").textContent = people['accountsPayable'][i]['name'];
 
-    for (var j = 0; j < people['accountsPayable'][i]['Transactions'].length; j++) {
+    for (var j = 0; j < people['accountsPayable'][i]['transactions'].length; j++) {
 
-         moneyOwed += people['accountsPayable'][i]['Transactions'][j]['Amount']
+      moneyOwed += people['accountsPayable'][i]['transactions'][j]['amount']
 
 
       var tempNodeList = document.querySelector("div[data-type='listTemplate']").cloneNode(true); //true for deep clone
-      tempNodeList.querySelector(".money-owed-list").textContent = "Money Owed: $" + people['accountsPayable'][i]['Transactions'][j]['Amount'];
-      tempNodeList.querySelector(".date").textContent = "Date: " + people['accountsPayable'][i]['Transactions'][j]['Date'];
+      tempNodeList.querySelector(".money-owed-list").textContent = "Money Owed: $" + people['accountsPayable'][i]['transactions'][j]['amount'];
+      tempNodeList.querySelector(".date").textContent = "date: " + people['accountsPayable'][i]['transactions'][j]['date'];
       tempNodeList.style.display = "block";
       tempNode.appendChild(tempNodeList);
     }
@@ -56,19 +56,39 @@ function populate() {
 
 }
 
-document.getElementById('submit').addEventListener('click', function(){
+document.getElementById('submit').addEventListener('click', function() {
   var dateBorrowed = document.getElementById('date-borrowed').value;
+  var theyOweYou = document.getElementById('theyOweYou').value;
   var amountOwed = document.getElementById('amount-owed').value;
-  var recipientName = document.getElementById('recipient-name').value;
+  var recipientname = document.getElementById('recipient-name').value;
+  var reason = document.getElementById('reason').value;
 
   console.log(dateBorrowed);
   console.log(amountOwed);
-  console.log(recipientName);
+  console.log(recipientname);
+  console.log(reason);
+  console.log(theyOweYou);
+
+
+
+  getData();
 
 });
 
+function getData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "http://localhost:5000/get", false);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send();
+  var response = JSON.parse(xhttp.responseText);
+  console.log(response);
+  people = response;
+}
+
+
 $(document).ready(function() {
   try {
+    getData();
     populate();
 
   } catch (e) {

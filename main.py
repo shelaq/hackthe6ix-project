@@ -1,5 +1,5 @@
 #import os
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, jsonify
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
@@ -13,14 +13,14 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def hello():
-    session['id'] = 'testid'
+    # session['id'] = 'testid'
     return render_template('index.html')
 
 @app.route('/get')
 def get():
-    users = mongo.db.usertest 
-    tester = users.find_one({'_id':session['id']})
-    return str(tester)
+    users = mongo.db.usertest
+    tester = users.find_one({'_id':'testid'})
+    return jsonify(tester)
 
 @app.route('/post')
 def post():
@@ -31,26 +31,26 @@ def post():
         "date": "02/14/2001",
         "reason": "potato"
     }
-    
+
     amount = int(placeholder['amount'])
     if not bool(placeholder['theyOweYou']):
         amount = -1*amount
-    
 
-    users = mongo.db.usertest 
+
+    users = mongo.db.usertest
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
 
     if tester:
         total = amount
         for i in range(len(tester['accountsPayable'])):
             total += int(tester['accountsPayable'][i]['total'])
-        
+
         users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
-        return 'fcn worked'    
+        return 'fcn worked'
     #else:
 
-    #SHELA ADD CODE TO REPLACE 
-    
+    #SHELA ADD CODE TO REPLACE
+
     return str(tester)
 
 

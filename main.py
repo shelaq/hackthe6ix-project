@@ -45,6 +45,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('id', None)
+    session.pop('google_token', None)
     return redirect(url_for('login'))
 
 @app.route('/oauth2callback')

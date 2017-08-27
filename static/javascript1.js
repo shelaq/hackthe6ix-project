@@ -56,13 +56,12 @@ function populate() {
       tempNode.appendChild(tempNodeList);
     }
 
+       
     moneyOwed = people['accountsPayable'][i]['total'];
     if (moneyOwed < 0) {
         tempNode.querySelector(".money-owed").textContent = 'You owe them $' + Math.abs(moneyOwed);
-        //tempNode.querySelector(".card-header").style.color = "#ef6774";
     } else {
         tempNode.querySelector(".money-owed").textContent = 'They owe you $' + Math.abs(moneyOwed);
-        //tempNode.querySelector(".card-header").style.color = "#85dd92";
     }
     
     tempNode.style.display = "block";

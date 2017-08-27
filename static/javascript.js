@@ -72,7 +72,7 @@ document.getElementById('submit').addEventListener('click', function() {
 
 
   var placeholder = {
-    "name": recipientname,
+    "name": $.trim(recipientname),
     "amount": amountOwed,
     "theyOweYou": theyOweYou,
     "date": dateBorrowed,

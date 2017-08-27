@@ -62,13 +62,19 @@ align-items: center;
 
 
 .money-owed{
-  margin-left: 50%;
+
   font-size: 14px;
   color: orange;
 }
 
 .card-header i {
-  margin-left: 10%;
+
+
+}
+
+.name{
+  width: 300px !important;
+  text-align: center;
 }
 
 .container{

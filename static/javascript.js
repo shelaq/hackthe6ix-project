@@ -21,8 +21,7 @@ var people = {
   }]
 }
 
-// working expression for collecting checkbox value. Returns Bool 
-console.log($('#theyOweYou').is(':checked')););
+// working expression for collecting checkbox value. Returns Bool
 
 //function for populating
 function populate() {
@@ -31,6 +30,8 @@ function populate() {
   var moneyOwed = 0;
 
   for (var i = 0; i < people['accountsPayable'].length; i++) {
+    console.log(i);
+
     var tempNode = document.querySelector("div[data-type='template']").cloneNode(true); //true for deep clone
     tempNode.querySelector(".name").textContent = people['accountsPayable'][i]['name'];
 
@@ -46,11 +47,12 @@ function populate() {
       tempNode.appendChild(tempNodeList);
     }
 
-    tempNode.querySelector(".money-owed").textContent = 'Money Owed: $' + moneyOwed;
+    tempNode.querySelector(".money-owed").textContent = 'Net Owing: $' + moneyOwed;
     moneyOwed = 0;
 
     tempNode.style.display = "block";
     document.body.appendChild(tempNode);
+
   }
 
   document.body.appendChild(docFrag);
@@ -58,22 +60,28 @@ function populate() {
 
 }
 
+
+
+
 document.getElementById('submit').addEventListener('click', function() {
   var dateBorrowed = document.getElementById('date-borrowed').value;
-  var theyOweYou = document.getElementById('theyOweYou').value;
+  var theyOweYou = $('#theyOweYou').is(':checked');
   var amountOwed = document.getElementById('amount-owed').value;
   var recipientname = document.getElementById('recipient-name').value;
   var reason = document.getElementById('reason').value;
 
-  console.log(dateBorrowed);
-  console.log(amountOwed);
-  console.log(recipientname);
-  console.log(reason);
-  console.log(theyOweYou);
 
 
+  var placeholder = {
+    "name": recipientname,
+    "amount": amountOwed,
+    "theyOweYou": theyOweYou,
+    "date": dateBorrowed,
+    "reason": reason
+  }
 
-  getData();
+  console.log(placeholder);
+  addEntry(JSON.stringify(placeholder));
 
 });
 
@@ -85,6 +93,16 @@ function getData() {
   var response = JSON.parse(xhttp.responseText);
   console.log(response);
   people = response;
+}
+
+function addEntry(data) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "http://localhost:5000/post", false);
+  xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+  xhttp.send(data);
+  getData();
+  location.reload();
+
 }
 
 

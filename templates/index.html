@@ -121,14 +121,14 @@
 <div class="container" data-type="template" style="display:none;">
   <div id="accordion" role="tablist" aria-multiselectable="true">
 
-      <div class="card"  >
+      <div class="card"  id="card-id">
         <div class="card-header" role="tab" id="headingOne">
           <h5 class="mb-0">
         <a class="name">
           Default Name
         </a>
         <span class="money-owed">Money Owed: $</span>
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" >
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="close" aria-expanded="true" >
           <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
         </a>
       </h5>
@@ -198,8 +198,8 @@
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="../static/javascript.js"></script>
-  <!-- <script type="text/javascript" src="{{ url_for('static', filename='javascript.js') }}"></script> -->
+  <!-- <script type="text/javascript" src="../static/javascript.js"></script> -->
+  <script type="text/javascript" src="{{ url_for('static', filename='javascript.js') }}"></script>
 
 
 </body>

@@ -9,8 +9,6 @@ app.config['MONGO_URI'] = 'mongodb://nick:nick@ds161503.mlab.com:61503/hackthe6i
 
 mongo = PyMongo(app)
 
-
-
 @app.route('/')
 def hello():
     # session['id'] = 'testid'
@@ -18,14 +16,14 @@ def hello():
 
 @app.route('/get')
 def get():
-    users = mongo.db.usertest
-    tester = users.find_one({'_id':'testid'})
+    users = mongo.db.usertest2 
+    tester = users.find_one({'_id':session['id']})
     return jsonify(tester)
 
 @app.route('/post')
 def post():
     placeholder = {
-        "name": "Eason",
+        "name": "Anne",
         "amount": "300",
         "theyOweYou": "True",
         "date": "02/14/2001",
@@ -46,17 +44,20 @@ def post():
             total += int(tester['accountsPayable'][i]['total'])
 
         users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
-        return 'fcn worked'
-    #else:
-
-    #SHELA ADD CODE TO REPLACE
-
+        users.update({
+            '_id':session['id'], 
+            "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}}, 
+            {'$set':{'accountsPayable.$.total': str(total) }})  
+    else:
+        users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total': placeholder['amount'], 'transactions':[] } }})
+        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
+    
     return str(tester)
 
 
 @app.route('/create')
 def create():
-    users = mongo.db.usertest
+    users = mongo.db.usertest2
     users.insert({
         '_id': 'testid',
         'accountsPayable': [

@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask, request, render_template, session, redirect, url_for, jsonify
 from flask_pymongo import PyMongo
 from flask_oauthlib.client import OAuth
@@ -77,6 +78,33 @@ def get():
     tester = users.find_one({'_id':session['id']})
     return jsonify(tester)
 
+@app.route('/delete', methods=['GET', 'POST'])
+def delete():
+    '''
+    placeholder = {
+        'name':'Eason'
+    }
+    '''
+    users = mongo.db.usertest
+    placeholder = request.json
+    tim = time.strftime("%d/%m/%Y")
+    tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
+
+    total = 0
+    for i in range(len(tester['accountsPayable'])):
+        if tester['accountsPayable'][i]['name'] == placeholder['name']:
+            total = tester['accountsPayable'][i]['total']
+
+    users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':str(tim), 'amount':int(-1*total), 'reason':"debt settled"}}} )
+    users.update({
+            '_id':session['id'],
+            "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
+            {'$set':{'accountsPayable.$.total': 0 }})
+    
+
+
+    return 'test'
+
 @app.route('/post', methods=['GET', 'POST'])
 def post():
     '''
@@ -90,27 +118,25 @@ def post():
     '''
     placeholder = request.json
     amount = int(placeholder['amount'])
-    if not placeholder['theyOweYou']:
+    if not bool(placeholder['theyOweYou']):
         amount = -1*amount
-        print('dopeass')
-
-    print(session['id'])
 
     users = mongo.db.usertest
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
     if tester:
-        total = amount
+        total = 0
         for i in range(len(tester['accountsPayable'])):
-            total += int(tester['accountsPayable'][i]['total'])
+            if tester['accountsPayable'][i]['name'] == placeholder['name']:
+                total = tester['accountsPayable'][i]['total'] + amount
 
-        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
+        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
         users.update({
             '_id':session['id'],
             "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
-            {'$set':{'accountsPayable.$.total': total }})
+            {'$set':{'accountsPayable.$.total': int(total) }})
     else:
-        users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total': placeholder['amount'], 'transactions':[] } }})
-        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
+        users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total':int(placeholder['amount']), 'transactions':[] } }})
+        update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
 
     return jsonify(tester)

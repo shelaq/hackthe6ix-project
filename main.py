@@ -16,7 +16,7 @@ def hello():
 
 @app.route('/get')
 def get():
-    users = mongo.db.usertest2 
+    users = mongo.db.usertest 
     tester = users.find_one({'_id':session['id']})
     return jsonify(tester)
 
@@ -36,7 +36,7 @@ def post():
     if not placeholder['theyOweYou']:
         amount = -1*amount
     
-    users = mongo.db.usertest2
+    users = mongo.db.usertest
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
 
     if tester:
@@ -58,7 +58,7 @@ def post():
 
 @app.route('/create')
 def create():
-    users = mongo.db.usertest2
+    users = mongo.db.usertest
     users.insert({
         '_id': 'testid',
         'accountsPayable': [

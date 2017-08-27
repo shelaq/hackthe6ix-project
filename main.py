@@ -1,13 +1,16 @@
-import os
-import time
+import os #needed for heroku 
+import time #needed for automaticaly settling debts
 from flask import Flask, request, render_template, session, redirect, url_for, jsonify
-from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo 
 from flask_oauthlib.client import OAuth
 
 app = Flask(__name__)
 
+#connecting to the mLab database
 app.config['MONGO_DBNAME'] = 'hackthe6ix-project'
 app.config['MONGO_URI'] = 'mongodb://nick:nick@ds161503.mlab.com:61503/hackthe6ix-project'
+
+#used for google login
 app.config['GOOGLE_ID'] = "476653142357-aqg5usequljmn6tsekd7k99f8q8mlj6f.apps.googleusercontent.com"
 app.config['GOOGLE_SECRET'] = "pioO4ZBDDipdI38zVOGkJraa"
 app.secret_key = 'development'
@@ -32,12 +35,7 @@ mongo = PyMongo(app)
 @app.route('/')
 def index():
 	if 'google_token' in session:
-		#me = google.get('userinfo')
-        #return jsonify({"data":me.data})
-        #current_user = users.find({"_id":session['id']})
-        #print(current_user)
 		return render_template('index.html')
-    #session['id'] = 'testid'
 	return redirect(url_for('login'))
 	
 @app.route('/login')
@@ -72,11 +70,11 @@ def authorized():
 def get_google_oauth_token():
     return session.get('google_token')
 
-@app.route('/get')
+@app.route('/get') #retrieves user document and returns it as json
 def get():
     users = mongo.db.usertest
     tester = users.find_one({'_id':session['id']})
-    return jsonify(tester)
+    return jsonify(tester) 
 
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
@@ -87,14 +85,15 @@ def delete():
     '''
     users = mongo.db.usertest
     placeholder = request.json
-    tim = time.strftime("%d/%m/%Y")
-    tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
+    tim = time.strftime("%d/%m/%Y") #get ccurrent date
+    tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']}) #find correct user with account
 
     total = 0
     for i in range(len(tester['accountsPayable'])):
         if tester['accountsPayable'][i]['name'] == placeholder['name']:
-            total = tester['accountsPayable'][i]['total']
+            total = int(tester['accountsPayable'][i]['total']) #get current total amount for this account payable
 
+    #create transacton so that end total = 0;
     users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':str(tim), 'amount':int(-1*total), 'reason':"debt settled"}}} )
     users.update({
             '_id':session['id'],
@@ -117,71 +116,35 @@ def post():
     }
     '''
     placeholder = request.json
+
+    #computes correct sign for amount
     amount = int(placeholder['amount'])
     if not bool(placeholder['theyOweYou']):
         amount = -1*amount
 
     users = mongo.db.usertest
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
-    if tester:
+
+
+    if tester: #if this person already exists in the document
         total = 0
         for i in range(len(tester['accountsPayable'])):
             if tester['accountsPayable'][i]['name'] == placeholder['name']:
-                total = tester['accountsPayable'][i]['total'] + amount
+                total = tester['accountsPayable'][i]['total'] + amount #increment total 
 
+        #update fields
         users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
         users.update({
             '_id':session['id'],
             "accountsPayable":{"$elemMatch" : {"name" : placeholder['name']}}},
             {'$set':{'accountsPayable.$.total': int(total) }})
-    else:
+    else: #need to create new person
         users.update({'_id':session['id']}, {'$push':{'accountsPayable': {'name':placeholder['name'], 'total':int(placeholder['amount']), 'transactions':[] } }})
         update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':amount, 'reason':placeholder['reason']}}} )
     tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
 
     return jsonify(tester)
 
-@app.route('/create')
-def create():
-    users = mongo.db.usertest
-    users.insert({
-        '_id': 'testid',
-        'accountsPayable': [
-            {
-                'name': 'Eason',
-                'total': -300,
-                'transactions' : [
-                    {
-                        'date': '01/01/2001',
-                        'amount': -900,
-                        'reason': 'potato'
-                    },
-                    {
-                        'date': '01/02/2001',
-                        'amount': 600,
-                        'reason': 'tomato'
-                    }
-                ]
-            },
-            {
-                'name': 'Shela',
-                'total': 100,
-                'transactions' : [
-                    {
-                        'date': '03/03/2003',
-                        'amount': 200,
-                        'reason': 'potato3'
-                    },
-                    {
-                        'date': '04/04/2004',
-                        'amount': -100,
-                        'reason': 'tomato4'
-                    }
-                ]
-            }
-        ]
-    });
-    return 'nice'
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -1,71 +1,101 @@
-import os
-from flask import Flask, render_template, request, redirect
-from flask import jsonify
-from flask import request
+#import os
+from flask import Flask, request, render_template, session
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'test'
-app.config['MONGO_URI'] = 'mongodb://shela:shela@ds161503.mlab.com:61503/hackthe6ix-project'
+app.config['MONGO_DBNAME'] = 'hackthe6ix-project'
+app.config['MONGO_URI'] = 'mongodb://nick:nick@ds161503.mlab.com:61503/hackthe6ix-project'
 
 mongo = PyMongo(app)
 
-@app.route('/test')
-def test():
-	user = mongo.db.users
-	user.insert({'name':'Anthony', 'lastname':'Bob'})
-	return 'Added User!'
-	# name = request.json['name']
-	# distance = request.json['distance']
-	# star_id = testDB.insert({'name': name, 'distance': distance})
-	# new_star = testDB.find_one({'_id': star_id })
-	# output = {'name' : new_star['name'], 'distance' : new_star['distance']}
-	# return jsonify({'result' : output})
-
-def add_user():
-	name = "Bob"
-	auth = "sjfosjf098ewj0whf"
-	users = mongo.db.users
-	users.insert({'auth_token':auth})
-	current_user = users.find(auth)
-	current_user.insert({'name':name})
-	return 'added user'
 
 
-@app.route('/testprintjson', methods=['GET'])
-def print_json():
-  user = mongo.db.users
-  output = []
-  for s in user.find():
-    output.append({'name' : s['name'], 'lastname' : s['lastname']})
-  return jsonify({'result' : output})
-
-# @app.route('/star/', methods=['GET'])
-# def get_one_star(name):
-  # star = mongo.db.stars
-  # s = star.find_one({'name' : name})
-  # if s:
-    # output = {'name' : s['name'], 'distance' : s['distance']}
-  # else:
-    # output = "No such name"
-  # return jsonify({'result' : output})
-
-# @app.route('/star', methods=['POST'])
-# def add_star():
-  # star = mongo.db.stars
-  # name = request.json['name']
-  # distance = request.json['distance']
-  # star_id = star.insert({'name': name, 'distance': distance})
-  # new_star = star.find_one({'_id': star_id })
-  # output = {'name' : new_star['name'], 'distance' : new_star['distance']}
-  # return jsonify({'result' : output})
-
-
-@app.route("/")
+@app.route('/')
 def hello():
+    session['id'] = 'testid'
     return render_template('index.html')
 
+@app.route('/get')
+def get():
+    users = mongo.db.usertest 
+    tester = users.find_one({'_id':session['id']})
+    return str(tester)
+
+@app.route('/post')
+def post():
+    placeholder = {
+        "name": "Eason",
+        "amount": "300",
+        "theyOweYou": "True",
+        "date": "02/14/2001",
+        "reason": "potato"
+    }
+    
+    amount = int(placeholder['amount'])
+    if not bool(placeholder['theyOweYou']):
+        amount = -1*amount
+    
+
+    users = mongo.db.usertest 
+    tester = users.find_one({'_id':session['id'], 'accountsPayable.name':placeholder['name']})
+
+    if tester:
+        total = amount
+        for i in range(len(tester['accountsPayable'])):
+            total += int(tester['accountsPayable'][i]['total'])
+        
+        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
+        return 'fcn worked'    
+    #else:
+
+    #SHELA ADD CODE TO REPLACE 
+    
+    return str(tester)
+
+
+@app.route('/create')
+def create():
+    users = mongo.db.usertest
+    users.insert({
+        '_id': 'testid',
+        'accountsPayable': [
+            {
+                'name': 'Eason',
+                'total': '-300',
+                'transactions' : [
+                    {
+                        'date': '01/01/2001',
+                        'amount': '-900',
+                        'reason': 'potato'
+                    },
+                    {
+                        'date': '01/02/2001',
+                        'amount': '600',
+                        'reason': 'tomato'
+                    }
+                ]
+            },
+            {
+                'name': 'Shela',
+                'total': '100',
+                'transactions' : [
+                    {
+                        'date': '03/03/2003',
+                        'amount': '200',
+                        'reason': 'potato3'
+                    },
+                    {
+                        'date': '04/04/2004',
+                        'amount': '-100',
+                        'reason': 'tomato4'
+                    }
+                ]
+            }
+        ]
+    });
+    return 'nice'
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.secret_key = 'secretkey'
+    app.run(debug=True)

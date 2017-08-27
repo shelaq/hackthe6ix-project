@@ -43,8 +43,10 @@ function populate() {
       transactionAmount = people['accountsPayable'][i]['transactions'][j]['amount'];
       if (transactionAmount < 0) {
         tempNodeList.querySelector(".money-owed-list").textContent = "You owe them $" + Math.abs(transactionAmount);
+        tempNodeList.querySelector(".money-owed-list").style.color = "#ef6774";
       } else {
         tempNodeList.querySelector(".money-owed-list").textContent = "They owe you $" + transactionAmount;
+        tempNodeList.querySelector(".money-owed-list").style.color = "#85dd92";
       }
       
       tempNodeList.querySelector(".date").textContent = people['accountsPayable'][i]['transactions'][j]['date'];
@@ -57,8 +59,10 @@ function populate() {
     moneyOwed = people['accountsPayable'][i]['total'];
     if (moneyOwed < 0) {
         tempNode.querySelector(".money-owed").textContent = 'You owe them $' + Math.abs(moneyOwed);
+        //tempNode.querySelector(".card-header").style.color = "#ef6774";
     } else {
         tempNode.querySelector(".money-owed").textContent = 'They owe you $' + Math.abs(moneyOwed);
+        //tempNode.querySelector(".card-header").style.color = "#85dd92";
     }
     
     tempNode.style.display = "block";

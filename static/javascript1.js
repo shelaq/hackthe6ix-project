@@ -38,19 +38,29 @@ function populate() {
 
     for (var j = 0; j < people['accountsPayable'][i]['transactions'].length; j++) {
 
-
-
       var tempNodeList = document.querySelector("div[data-type='listTemplate']").cloneNode(true); //true for deep clone
-      tempNodeList.querySelector(".money-owed-list").textContent = "Money Owed: $" + people['accountsPayable'][i]['transactions'][j]['amount'];
-      tempNodeList.querySelector(".date").textContent =people['accountsPayable'][i]['transactions'][j]['date'];
+      
+      transactionAmount = people['accountsPayable'][i]['transactions'][j]['amount'];
+      if (transactionAmount < 0) {
+        tempNodeList.querySelector(".money-owed-list").textContent = "You owe them $" + Math.abs(transactionAmount);
+      } else {
+        tempNodeList.querySelector(".money-owed-list").textContent = "They owe you $" + transactionAmount;
+      }
+      
+      tempNodeList.querySelector(".date").textContent = people['accountsPayable'][i]['transactions'][j]['date'];
       tempNodeList.querySelector(".reason").textContent =  people['accountsPayable'][i]['transactions'][j]['reason'];
 
       tempNodeList.style.display = "block";
       tempNode.appendChild(tempNodeList);
     }
 
-    tempNode.querySelector(".money-owed").textContent = 'Net Owing: $' + people['accountsPayable'][i]['total'];
     moneyOwed = people['accountsPayable'][i]['total'];
+    if (moneyOwed < 0) {
+        tempNode.querySelector(".money-owed").textContent = 'You owe them $' + Math.abs(moneyOwed);
+    } else {
+        tempNode.querySelector(".money-owed").textContent = 'They owe you $' + Math.abs(moneyOwed);
+    }
+    
     tempNode.style.display = "block";
 
     if (moneyOwed == 0) {} else {

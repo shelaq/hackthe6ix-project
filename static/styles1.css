@@ -12,11 +12,15 @@ align-items: center;
   color: white;
   position: absolute;
   right: 5%;
+  
 }
 
 .x{
   color: orange !important;
   float: right;
+  height:100%;
+  display:flex;
+  align-items:center;
 }
 
 .nav p {
@@ -85,9 +89,8 @@ h5{
 
   font-size: 14px;
   color: orange;
-  margin-left: 20px;
-  position: absolute;
-  right: 10%;
+  margin-left: 80px;
+  font-size:18px;
 }
 
 .card-header i {
@@ -98,6 +101,8 @@ h5{
 .name{
   width: 300px !important;
   text-align: center;
+  margin-left: 40px;
+  font-size: 27px;
 }
 
 .container{
@@ -130,13 +135,7 @@ li {
 }
 
 .money-owed-list{
-<<<<<<< HEAD
   color: orange;
-  position: absolute;
-  right: 10%;
-=======
-  color: orange
->>>>>>> 229d82b87d393756e489f53ae13ada210c152d7f
 }
 
 hr{

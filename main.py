@@ -45,7 +45,7 @@ def post():
         for i in range(len(tester['accountsPayable'])):
             total += int(tester['accountsPayable'][i]['total'])
         
-        users.update({'id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
+        users.update({'_id':session['id'], "accountsPayable.name":placeholder['name']}, {'$push':{"accountsPayable.$.transactions":{'date':placeholder['date'], 'amount':placeholder['amount'], 'reason':placeholder['reason']}}} )
         return 'fcn worked'    
     #else:
 

@@ -92,7 +92,8 @@ document.getElementById('submit').addEventListener('click', function() {
 
 function getData() {
   var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "http://localhost:5000/get", false);
+  var curr_url = location.protocol + "//" + location.host + "/get";
+  xhttp.open("GET", curr_url, false);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send();
   var response = JSON.parse(xhttp.responseText);
@@ -111,9 +112,9 @@ function clicked(data) {
   console.log(placeholder);
 
 
-
+  var curr_url = location.protocol + "//" + location.host + "/delete";
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://localhost:5000/delete", false);
+  xhttp.open("POST", curr_url, false);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify(placeholder));
   location.reload();
@@ -122,7 +123,8 @@ function clicked(data) {
 
 function addEntry(data) {
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://localhost:5000/post", false);
+  var curr_url = location.protocol + "//" + location.host + "/post";
+  xhttp.open("POST", curr_url, true);
   xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
   xhttp.send(data);
   getData();
@@ -131,7 +133,9 @@ function addEntry(data) {
 }
 
 function logOut() {
-  window.location.href = 'http://localhost:5000/logout';
+    var curr_url = location.protocol + "//" + location.host + "/logout";
+    
+    window.location.href = curr_url;
 }
 
 $(document).ready(function() {

@@ -118,19 +118,20 @@
 
 
 <!-- template -->
-<div class="container" data-type="template" style="display:none;">
+<div class="container" data-type="template" style="display:none;" >
   <div id="accordion" role="tablist" aria-multiselectable="true">
 
-      <div class="card"  id="card-id">
+      <div class="card"  >
         <div class="card-header" role="tab" id="headingOne">
           <h5 class="mb-0">
-        <a class="name">
+        <a class="name" id="name">
           Default Name
         </a>
         <span class="money-owed">Money Owed: $</span>
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="close" aria-expanded="true" >
-          <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
-        </a>
+        <i onclick="clicked(this.parentNode)" class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+
+        <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="close" aria-expanded="true" >
+        </a> -->
       </h5>
         </div>
 

@@ -31,13 +31,13 @@ function populate() {
 
   for (var i = 0; i < people['accountsPayable'].length; i++) {
     console.log(i);
+    // document.getElementById('card-id').id = i;
 
     var tempNode = document.querySelector("div[data-type='template']").cloneNode(true); //true for deep clone
     tempNode.querySelector(".name").textContent = people['accountsPayable'][i]['name'];
 
     for (var j = 0; j < people['accountsPayable'][i]['transactions'].length; j++) {
 
-      moneyOwed += people['accountsPayable'][i]['transactions'][j]['amount']
 
 
       var tempNodeList = document.querySelector("div[data-type='listTemplate']").cloneNode(true); //true for deep clone
@@ -47,8 +47,7 @@ function populate() {
       tempNode.appendChild(tempNodeList);
     }
 
-    tempNode.querySelector(".money-owed").textContent = 'Net Owing: $' + moneyOwed;
-    moneyOwed = 0;
+    tempNode.querySelector(".money-owed").textContent = 'Net Owing: $' + people['accountsPayable'][i]['total'];
 
     tempNode.style.display = "block";
     document.body.appendChild(tempNode);
@@ -95,6 +94,18 @@ function getData() {
   people = response;
 }
 
+function clicked(data){
+  console.log(data);
+  // var xhttp = new XMLHttpRequest();
+  // xhttp.open("DELETE", "http://localhost:5000/delete", false);
+  // xhttp.setRequestHeader("Content-type", "application/json");
+  // xhttp.send();
+  //
+  // var response = JSON.parse(xhttp.responseText);
+  // console.log(response);
+  // people = response;
+}
+
 function addEntry(data) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "http://localhost:5000/post", false);
@@ -102,6 +113,10 @@ function addEntry(data) {
   xhttp.send(data);
   getData();
   location.reload();
+
+}
+
+function deleteEntry (data){
 
 }
 
